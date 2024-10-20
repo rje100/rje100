@@ -1,0 +1,154 @@
+import { useState } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Calendar, MapPin, Briefcase, GraduationCap, Plane } from 'lucide-react'
+import Slider from "react-slick"
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+// Vous devrez ajouter ces styles dans votre fichier global.css ou les importer ici
+// import "slick-carousel/slick/slick.css"
+// import "slick-carousel/slick/slick-theme.css"
+
+export default function Home() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [category, setCategory] = useState('')
+  const [date, setDate] = useState('')
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('Réservation soumise:', { name, email, category, date })
+    setName('')
+    setEmail('')
+    setCategory('')
+    setDate('')
+  }
+
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  }
+
+  return (
+    <div className="min-h-screen bg-sky-50">
+      <header className="bg-green-600 text-white p-4">
+        <nav className="container mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Assist_Visa</h1>
+          <ul className="flex space-x-4">
+            <li><Link href="/" className="hover:text-purple-300">Accueil</Link></li>
+            <li><Link href="/services" className="hover:text-purple-300">Services</Link></li>
+            <li><Link href="/about" className="hover:text-purple-300">À propos</Link></li>
+            <li><Link href="/contact" className="hover:text-purple-300">Contact</Link></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main className="container mx-auto mt-8 px-4">
+        <section className="mb-12">
+          <Slider {...sliderSettings}>
+            <div>
+              <Image src="/placeholder.svg?height=400&width=800" alt="Étudiants internationaux" width={800} height={400} className="w-full object-cover rounded-lg" />
+            </div>
+            <div>
+              <Image src="/placeholder.svg?height=400&width=800" alt="Destination touristique" width={800} height={400} className="w-full object-cover rounded-lg" />
+            </div>
+            <div>
+              <Image src="/placeholder.svg?height=400&width=800" alt="Travailleurs à l'étranger" width={800} height={400} className="w-full object-cover rounded-lg" />
+            </div>
+          </Slider>
+        </section>
+
+        <section className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-green-700 mb-4">Bienvenue chez Assist_Visa</h2>
+          <p className="text-xl text-purple-700">Votre partenaire pour les études et le tourisme à l'étranger</p>
+        </section>
+
+        <section className="grid md:grid-cols-3 gap-8 mb-12">
+          <Card className="bg-white shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center text-green-600">
+                <GraduationCap className="mr-2" />
+                Études
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>Trouvez la meilleure université à l'étranger pour vos études.</CardDescription>
+            </CardContent>
+          </Card>
+          <Card className="bg-white shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center text-purple-600">
+                <Plane className="mr-2" />
+                Tourisme
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>Planifiez votre voyage de rêve avec notre assistance.</CardDescription>
+            </CardContent>
+          </Card>
+          <Card className="bg-white shadow-lg">
+            <CardHeader>
+              <CardTitle className="flex items-center text-sky-600">
+                <Briefcase className="mr-2" />
+                Travailleur
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription>Obtenez de l'aide pour trouver un emploi à l'étranger.</CardDescription>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="bg-white p-8 rounded-lg shadow-lg mb-12">
+          <h3 className="text-2xl font-bold text-green-700 mb-4">Réserver un rendez-vous</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label htmlFor="name">Nom complet</Label>
+              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div>
+              <Label htmlFor="category">Catégorie</Label>
+              <Select value={category} onValueChange={setCategory} required>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionnez une catégorie" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="etudes">Études</SelectItem>
+                  <SelectItem value="tourisme">Tourisme</SelectItem>
+                  <SelectItem value="travailleur">Travailleur</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="date">Date souhaitée</Label>
+              <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+            </div>
+            <Button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white">
+              Réserver
+            </Button>
+          </form>
+        </section>
+      </main>
+
+      <footer className="bg-green-600 text-white p-4 mt-12">
+        <div className="container mx-auto text-center">
+          <p>&copy; 2023 Assist_Visa. Tous droits réservés.</p>
+        </div>
+      </footer>
+    </div>
+  )
+}
