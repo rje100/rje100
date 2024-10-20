@@ -1,0 +1,77 @@
+import { useState } from 'react'
+import { CheckCircle, Circle } from 'lucide-react'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+export default function SuiviDemarches() {
+  const [reference, setReference] = useState('')
+  const [status, setStatus] = useState(null)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Ici, vous devriez implémenter la logique pour récupérer le statut réel
+    // Pour cet exemple, nous utilisons un statut fictif
+    setStatus({
+      etape: 2,
+      etapes: [
+        { nom: "Soumission du dossier", complete: true },
+        { nom: "Vérification des documents", complete: true },
+        { nom: "Traitement de la demande", complete: false },
+        { nom: "Décision finale", complete: false },
+      ]
+    })
+  }
+
+  return (
+    <div className="container mx-auto mt-8 px-4">
+      <h2 className="text-3xl font-bold text-green-700 mb-8">Suivi de vos démarches</h2>
+      
+      <Card className="bg-white shadow-lg mb-8">
+        <CardHeader>
+          <CardTitle className="text-purple-600">Vérifier le statut de votre dossier</CardTitle>
+          <CardDescription>Entrez votre numéro de référence pour voir l'avancement de votre dossier.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="flex space-x-4">
+            <Input 
+              value={reference} 
+              onChange={(e) => setReference(e.target.value)} 
+              placeholder="Numéro de référence" 
+              className="flex-grow"
+            />
+            <Button type="submit" className="bg-green-600 hover:bg-green-700 text-white">
+              Vérifier
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
+      {status && (
+        <Card className="bg-white shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-sky-600">Statut de votre dossier</CardTitle>
+            <CardDescription>Étape actuelle : {status.etape} sur {status.etapes.length}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-4">
+              {status.etapes.map((etape, index) => (
+                <li key={index} className="flex items-center">
+                  {etape.complete ? (
+                    <CheckCircle className="text-green-500 mr-2" />
+                  ) : (
+                    <Circle className="text-gray-300 mr-2" />
+                  )}
+                  <span className={etape.complete ? "text-green-700" : "text-gray-500"}>
+                    {etape.nom}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  )
+}
